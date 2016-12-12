@@ -27,9 +27,6 @@ void JNIContext::init( jobject jobj, jclass clazz ){
     		"(ILcom/jupiter/snifferframework/Packet;)V");
 }
 
-JNIContext::JNIContext() {
-}
-
 JNIContext::~JNIContext(){
     g_env->DeleteGlobalRef(m_jsniffer);
     g_env->DeleteGlobalRef(m_jsnifferClazz);
@@ -40,13 +37,12 @@ jobject JNIContext::jsniffer() const{
     return m_jsniffer;
 }
 
-JNIContext* JNIContext::get( ){
-    static JNIContext sInstance;
-    return &sInstance;
-}
-
 jclass JNIContext::jsniffer_class() const{
     return m_jsnifferClazz;
+}
+
+JNIContext::JNIContext() {
+
 }
 
 void JNIContext::notify_new_packet(JNIEnv *env, Packet amsg){

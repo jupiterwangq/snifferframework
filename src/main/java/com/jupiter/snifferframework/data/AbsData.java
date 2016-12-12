@@ -2,7 +2,6 @@ package com.jupiter.snifferframework.data;
 
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.jupiter.snifferframework.Sniffer;
 import java.util.HashMap;
 import java.util.Map;

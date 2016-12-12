@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.jupiter.snifferframework.Event;
 import com.jupiter.snifferframework.Sniffer;
 import com.jupiter.snifferframework.data.AbsData;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;

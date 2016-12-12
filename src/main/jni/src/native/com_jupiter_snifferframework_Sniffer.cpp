@@ -23,14 +23,14 @@ void generate_path(const char* daemonPath) {
 
 JNIEXPORT jint JNICALL Java_com_jupiter_snifferframework_Sniffer_nativeSniff
   (JNIEnv *env, jobject jsniffer, jstring daemonPath) {
-	JNIContext::get()->init(jsniffer, env->GetObjectClass(jsniffer));
+	JNIContext::get_instance().init(jsniffer, env->GetObjectClass(jsniffer));
 	generate_path(JNIContext::c_str(daemonPath));
-	PacketReceiver::get()->start_receive();
+	PacketReceiver::get_instance().start_receive();
 }
 
 JNIEXPORT void JNICALL Java_com_jupiter_snifferframework_Sniffer_nativeStop
   (JNIEnv *env, jobject jsniffer) {
-	PacketReceiver::get()->stop_receive();
+	PacketReceiver::get_instance().stop_receive();
 }
 
 jint JNICALL JNI_OnLoad(JavaVM* jvm, void* reserved ) {

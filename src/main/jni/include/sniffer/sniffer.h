@@ -10,18 +10,16 @@ extern "C"{
 #include <string.h>
 #include <pthread.h>
 #include <threadproxy.h>
+#include <singleton.h>
 #include "SnifferInterface.h"
 
 /**
  * @author jupiter
  */
-class Sniffer{
+class Sniffer : public Singleton<Sniffer> {
 public:
 
-    static Sniffer* get();
-
-    ~Sniffer(){
-    }
+    ~Sniffer(){ }
 
     void set_interface( const SnifferInterface &snifferInterface );
 
@@ -52,20 +50,18 @@ public:
 
 private:
 
+    MAKE_FRIENDS(Sniffer);
+
     /**
      * 解析启动参数
      */
     void parse_param(int argc, char **argv);
 
-    Sniffer();
-
     int prepare_sniffer();
 
+    Sniffer();
+
     void clear();
-
-    Sniffer( const Sniffer& );
-
-    Sniffer& operator=(const Sniffer& );
 
     void* snifferThread(void *args);
 

@@ -49,6 +49,9 @@ enum
 # define NIDS_TIMED_OUT 5
 # define NIDS_EXITING   6	/* nids is exiting; last chance to get data */
 
+//错误码的定义可以放这里
+#define NIDS_ERROR_INVALID_FILTER 2
+
 # define NIDS_DO_CHKSUM  0
 # define NIDS_DONT_CHKSUM 1
 

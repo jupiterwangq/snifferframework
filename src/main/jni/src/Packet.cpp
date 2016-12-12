@@ -38,19 +38,7 @@ Packet& Packet::operator=(const Packet &src) {
 }
 
 void Packet::copy_ptr(Packet *src, Packet *dest) {
-    if (src == NULL || dest == NULL) return;
-    dest->m_seq = src->m_seq;
-    dest->m_window = src->m_window;
-    dest->m_acked  = src->m_acked;
-    dest->m_ack_seq = src->m_ack_seq;
-    dest->m_src_port = src->m_src_port;
-    dest->m_dest_port = src->m_dest_port;
-    dest->m_length = src->m_length;
-    dest->m_event  = src->m_event;
-    dest->m_extra = src->m_extra;
-    dest->m_type = src->m_type;
-    memcpy(dest->m_src_ip, src->m_src_ip, 16);
-    memcpy(dest->m_dest_ip, src->m_dest_ip, 16);
-    memcpy(dest->m_data, src->m_data, src->m_length);
+    if (src == NULL || dest == NULL || src == dest) return;
+    *dest = *src;
 }
 

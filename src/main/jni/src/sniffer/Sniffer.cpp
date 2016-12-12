@@ -7,10 +7,12 @@
 
 static struct nids_chksum_ctl g_checksum_ctrl;
 
-extern char SEMA_PUT_PATH[256]; // "/data/data/com.jupiter.sniffer/put"
-extern char SEMA_GET_PATH[256]; // "/data/data/com.jupiter.sniffer/get"
-extern char SEMA_MUTEX_PATH[256]; // "/data/data/com.jupiter.sniffer/mutex"
-extern char SHM_PATH[256]; // "/data/data/com.jupiter.sniffer/shm"
+extern char SEMA_PUT_PATH[256]; // "/data/data/jupiter.sniffer/put"
+extern char SEMA_GET_PATH[256]; // "/data/data/jupiter.sniffer/get"
+extern char SEMA_MUTEX_PATH[256]; // "/data/data/jupiter.sniffer/mutex"
+extern char SHM_PATH[256]; // "/data/data/jupiter.sniffer/shm"
+
+static Sniffer &g_sniffer = Sniffer::get_instance();
 
 /**
  * nids检测到的告警
@@ -37,7 +39,7 @@ static void my_nids_syslog(int type, int errnum, struct ip *iph, void *data) {
 			if (NULL != dst) {
 				strcpy(pkt.m_dest_ip, dst);
 			}
-			Sniffer::get()->notify_packet(pkt);
+			g_sniffer.notify_packet(pkt);
 			break;
 		}
 		case NIDS_WARN_TCP: {
@@ -55,7 +57,7 @@ static void my_nids_syslog(int type, int errnum, struct ip *iph, void *data) {
 				strcpy(pkt.m_src_ip,  src);
 				strcpy(pkt.m_dest_ip, dst);
 			}
-			Sniffer::get()->notify_packet(pkt);
+			g_sniffer.notify_packet(pkt);
 			break;
 		}
 		case NIDS_WARN_SCAN: {
@@ -93,7 +95,7 @@ static void my_nids_syslog(int type, int errnum, struct ip *iph, void *data) {
 			pkt.m_event = ENV_WARN_SCAN;
 			pkt.m_length = strlen(buf);
 			strcpy(pkt.m_data, buf);
-			Sniffer::get()->notify_packet(pkt);
+			g_sniffer.notify_packet(pkt);
 			break;
 		}
 		default:
@@ -130,7 +132,7 @@ static void tcp_callback(struct tcp_stream *a_tcp, void **data) {
           pkt.m_dest_port = a_tcp->addr.dest;
           strcpy(pkt.m_src_ip, int_ntoa(a_tcp->addr.saddr));
           strcpy(pkt.m_dest_ip, int_ntoa(a_tcp->addr.daddr));
-		  Sniffer::get()->notify_packet(pkt);
+		  g_sniffer.notify_packet(pkt);
 	      return;
 	}
 
@@ -146,7 +148,7 @@ static void tcp_callback(struct tcp_stream *a_tcp, void **data) {
         pkt.m_dest_port = a_tcp->addr.dest;
         strcpy(pkt.m_src_ip, int_ntoa(a_tcp->addr.saddr));
         strcpy(pkt.m_dest_ip, int_ntoa(a_tcp->addr.daddr));
-		Sniffer::get()->notify_packet(pkt);
+		g_sniffer.notify_packet(pkt);
 		return;
 	}
 
@@ -190,7 +192,7 @@ static void tcp_callback(struct tcp_stream *a_tcp, void **data) {
         memcpy(pkt.m_data, hlf->data, hlf->count_new);
         strcpy(pkt.m_src_ip, int_ntoa(a_tcp->addr.saddr));
         strcpy(pkt.m_dest_ip, int_ntoa(a_tcp->addr.daddr));
-		Sniffer::get()->notify_packet(pkt);
+		g_sniffer.notify_packet(pkt);
 	}
 	return ;
 }
@@ -209,7 +211,7 @@ static void udp_callback(struct tuple4 *addr,char *buf,int len,struct ip * iph) 
 	pkt.m_dest_port = addr->dest;
 	pkt.m_length = len;
 	memcpy(pkt.m_data, buf, len);
-	Sniffer::get()->notify_packet(pkt);
+	g_sniffer.notify_packet(pkt);
 }
 
 /**
@@ -294,13 +296,14 @@ int Sniffer::prepare_sniffer() {
 
 	//2.reset nids_syslog callback
 	nids_params.syslog = my_nids_syslog;
+	nids_params.promisc = 1;
 
 	//3.初始化nids
 	int ret = nids_init();
 	if ( ret < 0 ) {
 		LOGE("-->Init nids error.");
 		exit(1);
-	} else if (ret == 2) {
+	} else if (ret == NIDS_ERROR_INVALID_FILTER) {
 		//返回值为2表明用户传入的过滤表达式有错误,通知用户并用默认得过滤表达式启动nids库
 		Packet pkt;
 		pkt.m_type = 1;
@@ -316,6 +319,10 @@ int Sniffer::prepare_sniffer() {
 	return 0;
 }
 
+Sniffer::Sniffer() {
+
+}
+
 void *Sniffer::pcap_thread(void *args) {
     nids_run();
     return 0;
@@ -325,14 +332,6 @@ void Sniffer::notify_packet(const Packet &pkt) {
 	if (m_interface.on_new_packet != NULL) {
 		m_interface.on_new_packet(pkt);
 	}
-}
-
-Sniffer::Sniffer() {
-}
-
-Sniffer* Sniffer::get() {
-    static Sniffer sInstance;
-    return &sInstance;
 }
 
 void Sniffer::stop_sniff() {

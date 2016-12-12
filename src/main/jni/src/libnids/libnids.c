@@ -692,7 +692,7 @@ int nids_init()
 #endif
     }
 
-	if (filter_error) return 2;
+	if (filter_error) return NIDS_ERROR_INVALID_FILTER;
     return 1;
 }
 

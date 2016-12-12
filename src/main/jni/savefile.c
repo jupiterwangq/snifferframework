@@ -67,7 +67,7 @@ static const char rcsid[] _U_ =
 
 /*
  * Navtel Communcations' format, with nanosecond timestamps,
- * as per a request from Dumas Hwang <dumas.hwang@navtelcom.com>.
+ * as per a request from Dumas Hwang <dumas.hwang@navtelcom.>.
  */
 #define NAVTEL_TCPDUMP_MAGIC	0xa12b3c4d
 
@@ -388,7 +388,7 @@ static const char rcsid[] _U_ =
 #define LINKTYPE_GPF_F		171		/* GPF-T (ITU-T G.7041/Y.1303) */
 
 /*
- * Requested by Oolan Zimmer <oz@gcom.com> for use in Gcom's T1/E1 line
+ * Requested by Oolan Zimmer <oz@gcom.> for use in Gcom's T1/E1 line
  * monitoring equipment.
  */
 #define LINKTYPE_GCOM_T1E1	172

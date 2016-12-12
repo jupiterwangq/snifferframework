@@ -3,16 +3,15 @@
 
 #include <jni.h>
 #include <string.h>
+#include <singleton.h>
 #include "../../include/packet.h"
 #include "../packetbuffer.h"
 
 /**
  * JNI上下文,提供一些通用接口
  */
-class JNIContext{
+class JNIContext : public Singleton<JNIContext>{
 public:
-    static JNIContext* get( );
-
     static char* c_str( jstring& );
 
     void init( jobject jsnifferObj, jclass jsnifferClazz );
@@ -26,6 +25,9 @@ public:
     ~JNIContext();
 
 private:
+
+    MAKE_FRIENDS(JNIContext);
+
     jobject m_jsniffer;
     jclass  m_jsnifferClazz;
     jclass  m_jPacketClazz;
@@ -46,8 +48,7 @@ private:
     jmethodID m_PacketInit;
 
     JNIContext();
-    JNIContext( const JNIContext& );
-    JNIContext& operator=( const JNIContext& );
+
 };
 
 #endif

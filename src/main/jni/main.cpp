@@ -93,8 +93,9 @@ int main( int argc, char **argv){
     notify_pid();
 
     //启动sniffer
-    Sniffer::get()->set_interface(g_interface);
-    Sniffer::get()->start_sniff(argc - 1, ++argv);  //进程名会占据一个参数
+    Sniffer &sniffer = Sniffer::get_instance();
+    sniffer.set_interface(g_interface);
+    sniffer.start_sniff(argc - 1, ++argv);  //进程名会占据一个参数
 
     //结束时释放一下
     if (g_conn != NULL) {

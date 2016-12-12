@@ -426,7 +426,7 @@ struct bpf_version {
 
 /*
  * Various SS7 encapsulations, as per a request from Jeff Morriss
- * <jeff.morriss[AT]ulticom.com> and subsequent discussions.
+ * <jeff.morriss[AT]ulticom.> and subsequent discussions.
  */
 #define DLT_MTP2_WITH_PHDR	139	/* pseudo-header with various info, followed by MTP2 */
 #define DLT_MTP2		140	/* MTP2, without pseudo-header */
@@ -565,7 +565,7 @@ struct bpf_version {
 #define DLT_GPF_F		171	/* GPF-F (ITU-T G.7041/Y.1303) */
 
 /*
- * Requested by Oolan Zimmer <oz@gcom.com> for use in Gcom's T1/E1 line
+ * Requested by Oolan Zimmer <oz@gcom.> for use in Gcom's T1/E1 line
  * monitoring equipment.
  */
 #define DLT_GCOM_T1E1		172

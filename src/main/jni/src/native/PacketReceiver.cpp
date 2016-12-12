@@ -23,11 +23,6 @@ PacketReceiver::~PacketReceiver(){
 	}
 }
 
-PacketReceiver *PacketReceiver::get(){
-	static PacketReceiver s_instance;
-	return &s_instance;
-}
-
 /**
  * Note:Do Not do time cost operation in this thread
  */
@@ -46,7 +41,7 @@ void *PacketReceiver::consumer_thread(void *args) {
 
 	while( !m_stop_flag) {
 		Packet apkt = m_buffer.pop();
-		JNIContext::get()->notify_new_packet(env, apkt);
+		JNIContext::get_instance().notify_new_packet(env, apkt);
 	}
 
 	g_jvm->DetachCurrentThread();
