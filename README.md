@@ -3,6 +3,7 @@ SnifferAndroid
 
 # 简介
 SnifferAndroid是安卓平台上的手机抓包sdk,底层基于libnids实现。有抓包需求的应用可以方便的接入该sdk。特别提醒：使用此sdk需要root权限。使用此SDK的抓包app例子可参考[安卓抓包](http://sj.qq.com/myapp/detail.htm?apkName=com.jupiter.sniffer)
+
 # 功能
 * 支持HTTP
 * 支持DNS
@@ -10,6 +11,8 @@ SnifferAndroid是安卓平台上的手机抓包sdk,底层基于libnids实现。�
 * 支持pcap过滤表达式
 * 可方便扩展以支持其他协议
 
+# 架构
+![](https://github.com/jupiterwangq/snifferframework/blob/master/arch.png)
 
 # 应用接入方法
     1.首先将编译出的pcapd可执行程序放入到应用程序某个路径下，比如libs/pcapd；
